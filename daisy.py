@@ -10,4 +10,8 @@ class Post:
             self.content = md_reader.convert(file.read())
 
             self.title = md_reader.Meta["title"].pop()
-            self.date = md_reader.Meta["date"].pop()
+            
+            try:
+                self.date = md_reader.Meta["date"].pop()
+            except KeyError:
+                self.date = None
