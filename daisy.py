@@ -32,6 +32,5 @@ class Post:
                 "date": self.date,
                 })
 
-    def write_html_to_file(self):
         with open("output/" + self.filename + ".html", "w") as file:
             file.write(self.html)
