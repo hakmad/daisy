@@ -1,4 +1,5 @@
 import markdown
+import jinja2
 
 class Post:
     def __init__(self, filename):
@@ -15,3 +16,18 @@ class Post:
                 self.date = md_reader.Meta["date"].pop()
             except KeyError:
                 self.date = None
+
+    def render_html(self, post_type):
+        if post_type == "meta":
+            template_file = "templates/meta.html"
+        elif post_type == "blog":
+            template_file = "templates/blog.html"
+
+        with open(template, "r") as file:
+            template = jinja2.Template(file.read())
+
+            self.html = template.render({
+                "content": self.content,
+                "title": self.title,
+                "date": self.date,
+                })
