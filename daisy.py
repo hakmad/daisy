@@ -1,6 +1,7 @@
 import markdown
 import jinja2
 
+
 class Post:
     """Class to represent a single post.
 
