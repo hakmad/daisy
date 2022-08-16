@@ -1,4 +1,5 @@
-"""daisy
+"""
+Static Site Generator
 
 A CLI static site generator written in Python.
 """
