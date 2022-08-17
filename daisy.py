@@ -5,8 +5,9 @@ A CLI static site generator written in Python.
 """
 
 
-import markdown
+import glob
 import jinja2
+import markdown
 
 
 class Post:
@@ -80,3 +81,20 @@ class Post:
         # Write out full HTML to file.
         with open("output/" + self.filename + ".html", "w") as file:
             file.write(self.html)
+
+
+def get_posts(path):
+    """Create a list of Post objects from a path.
+
+    Arguments:
+        path (str): a path that glob uses to look for posts.
+
+    Returns:
+        [Post]: a list of Post objects.
+    """
+    post_list = []
+    
+    for file in glob.glob(path):
+        post_list.append(Post(file))
+
+    return post_list
