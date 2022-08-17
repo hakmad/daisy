@@ -8,6 +8,7 @@ A CLI static site generator written in Python.
 import glob
 import jinja2
 import markdown
+import os
 
 
 class Post:
@@ -100,7 +101,22 @@ def get_posts(path):
     return post_list
 
 
+def check_dirs():
+    """Checks if certain directories exist, and if not, creates them.
+
+    Arguments:
+        None
+
+    Returns:
+        None
+    """
+    if not os.path.exists("output/blog/"):
+        os.makedirs("output/blog/")
+
+
 if __name__ == "__main__":
+    check_dirs()
+
     blog_posts = get_posts("blog/*.md")
 
     for post in blog_posts:
