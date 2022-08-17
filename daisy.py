@@ -69,7 +69,7 @@ class Post:
             template_file = "templates/blog.html"
 
         # Render the HTML to the template.
-        with open(template, "r") as file:
+        with open(template_file, "r") as file:
             template = jinja2.Template(file.read())
 
             self.html = template.render({
