@@ -101,6 +101,26 @@ def get_posts(path):
     return post_list
 
 
+def generate_index_file(posts):
+    """Create an index file from a list of posts.
+
+    Arguments:
+        posts ([Post]) - list of posts to put in the index file.
+
+    Returns:
+        None
+    """
+    # Sort posts in reverse chronological order.
+    posts.sort(key=lambda post: post.date, reverse=True)
+
+    # Write index file.
+    with open("index.md", "w") as file:
+        file.write("title: Index\n\n")
+
+        for post in posts:
+            file.write("[{}]({}) ({})\n\n"
+
+
 def check_dirs():
     """Checks if certain directories exist, and if not, creates them.
 
@@ -121,6 +141,8 @@ if __name__ == "__main__":
 
     for post in blog_posts:
         post.render_html("blog")
+
+    generate_index_file(blog_posts)
 
     meta_posts = get_posts("*.md")
 
