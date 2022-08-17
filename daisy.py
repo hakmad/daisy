@@ -36,7 +36,7 @@ class Post:
         self.filename = filename[:-3]
 
         with open(filename, "r") as file:
-            md_reader = markdown.Markdown(extensions=["meta"])
+            md_reader = markdown.Markdown(extensions=["meta", "fenced_code"])
 
             self.content = md_reader.convert(file.read())
 
