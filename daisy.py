@@ -98,3 +98,15 @@ def get_posts(path):
         post_list.append(Post(file))
 
     return post_list
+
+
+if __name__ == "__main__":
+    blog_posts = get_posts("blog/*.md")
+
+    for post in blog_posts:
+        post.render_html("blog")
+
+    meta_posts = get_posts("*.md")
+
+    for post in meta_posts:
+        post.render_html("meta")
