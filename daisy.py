@@ -32,6 +32,7 @@ class Post:
         Returns:
             None
         """
+        # Drop last three characters of the filename, they're not needed.
         self.filename = filename[:-3]
 
         with open(filename, "r") as file:
@@ -41,6 +42,8 @@ class Post:
 
             self.title = md_reader.Meta["title"].pop()
             
+            # Attempt to get the date. If the date doesn't exist, then just
+            # set the date attribute to None.
             try:
                 self.date = md_reader.Meta["date"].pop()
             except KeyError:
@@ -58,11 +61,13 @@ class Post:
         Returns:
             None
         """
+        # Open the relevant template file.
         if post_type == "meta":
             template_file = "templates/meta.html"
         elif post_type == "blog":
             template_file = "templates/blog.html"
 
+        # Render the HTML to the template.
         with open(template, "r") as file:
             template = jinja2.Template(file.read())
 
@@ -72,5 +77,6 @@ class Post:
                 "date": self.date,
                 })
 
+        # Write out full HTML to file.
         with open("output/" + self.filename + ".html", "w") as file:
             file.write(self.html)
