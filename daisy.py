@@ -86,6 +86,18 @@ class Post:
             file.write(self.html)
 
 
+def get_post(path):
+    """Create a single Post object from a path.
+
+    Arguments:
+        path (str): a path to look for a post.
+
+    Returns:
+        Post: a Post object.
+    """
+    return Post(path)
+
+
 def get_posts(path):
     """Create a list of Post objects from a path.
 
