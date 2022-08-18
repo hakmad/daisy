@@ -171,7 +171,8 @@ def generate_index_file(posts):
         file.write("title: Index\n\n")
 
         for post in posts:
-            file.write("[{}]({}) ({})\n\n")
+            file.write("[{}]({}) ({})\n\n".format(post.title,
+                post.filename + ".html", post.date))
 
 
 def check_dirs():
