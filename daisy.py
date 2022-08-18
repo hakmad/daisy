@@ -39,6 +39,7 @@ class Post:
         # Drop last three characters of the filename, they're not needed.
         self.filename = filename[:-3]
 
+        # Open and convert the file to a HTML fragment.
         with open(filename, "r") as file:
             md_reader = markdown.Markdown(extensions=["meta", "fenced_code"])
 
@@ -141,7 +142,8 @@ def add_to_index_file(post):
     """
     with open("index.md", "r+") as file:
         data = file.read()
-
+        
+        # Check if post is already in the index file.
         if post.filename not in data:
             index = len("title: Index\n\n")
             entry = "[{}]({}) ({})\n\n".format(post.title,
@@ -149,6 +151,7 @@ def add_to_index_file(post):
 
             new_data = insert_str(data, entry, index)
 
+            # Empty and rewrite the file.
             file.seek(0)
             file.truncate()
             file.write(new_data)
