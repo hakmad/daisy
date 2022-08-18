@@ -130,6 +130,30 @@ def get_posts(path):
     return post_list
 
 
+def add_to_index_file(post):
+    """Add a post to the top of the index file.
+
+    Arguments:
+        post (Post) - post to add to the index file.
+
+    Returns:
+        None
+    """
+    with open("index.md", "r+") as file:
+        data = file.read()
+
+        if post.filename not in data:
+            index = len("title: Index\n\n")
+            entry = "[{}]({}) ({})\n\n".format(post.title,
+                    post.filename + ".html", post.date)
+
+            new_data = insert_str(data, entry, index)
+
+            file.seek(0)
+            file.truncate()
+            file.write(new_data)
+
+
 def generate_index_file(posts):
     """Create an index file from a list of posts.
 
