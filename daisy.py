@@ -86,6 +86,21 @@ class Post:
             file.write(self.html)
 
 
+def insert_string(string, string_to_insert, index):
+    """Insert a string into another string.
+
+    Arguments:
+        string (str): parent string.
+        string_to_insert (str): string to insert into parent string.
+        index (int): index to insert at.
+
+    Returns:
+        str: a new string containing the string to insert in the
+            parent string.
+    """
+    return string[:index] + string_to_insert + string[index:]
+
+
 def get_post(path):
     """Create a single Post object from a path.
 
