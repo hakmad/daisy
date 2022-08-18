@@ -17,6 +17,7 @@ import os
 
 # Files.
 index_file = "index.md"
+ignored_files = ["README.md"]
 
 # Directories.
 blog_dir = "blog"
@@ -147,7 +148,8 @@ def get_posts(path):
     post_list = []
     
     for file in glob.glob(path):
-        post_list.append(Post(file))
+        if file not in ignored_files:
+            post_list.append(Post(file))
 
     return post_list
 
