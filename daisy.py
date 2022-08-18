@@ -13,6 +13,27 @@ import markdown
 import os
 
 
+### Global variables. ###
+
+# Files.
+index_file = "index.md"
+
+# Directories.
+blog_dir = "blog"
+template_dir = "templates"
+output_dir = "output"
+
+# Extensions.
+html_ext = ".html"
+md_ext = ".md"
+
+# Miscellaneous.
+index_header = "title: Index\n\n"
+index_post_entry = "[{}]({}) ({})"
+
+
+### Classes. ###
+
 class Post:
     """Class to represent a single post.
 
@@ -67,10 +88,7 @@ class Post:
             None
         """
         # Open the relevant template file.
-        if post_type == "meta":
-            template_file = "templates/meta.html"
-        elif post_type == "blog":
-            template_file = "templates/blog.html"
+        template_file = template_dir + os.path.sep + post_type + html_ext
 
         # Render the HTML to the template.
         with open(template_file, "r") as file:
@@ -83,9 +101,12 @@ class Post:
                 })
 
         # Write out full HTML to file.
-        with open("output/" + self.filename + ".html", "w") as file:
+        output_file = output_dir + os.path.sep + self.filename + html_ext
+        with open(output_file, "w") as file:
             file.write(self.html)
 
+
+### Functions. ###
 
 def insert_string(string, string_to_insert, index):
     """Insert a string into another string.
@@ -140,14 +161,14 @@ def add_to_index_file(post):
     Returns:
         None
     """
-    with open("index.md", "r+") as file:
+    with open(index_file, "r+") as file:
         data = file.read()
         
         # Check if post is already in the index file.
         if post.filename not in data:
-            index = len("title: Index\n\n")
-            entry = "[{}]({}) ({})\n\n".format(post.title,
-                    post.filename + ".html", post.date)
+            index = len(index_header)
+            entry = index_post_entry.format(post.title,
+                    post.filename + html_ext, post.date)
 
             new_data = insert_str(data, entry, index)
 
@@ -170,12 +191,12 @@ def generate_index_file(posts):
     posts.sort(key=lambda post: post.date, reverse=True)
 
     # Write index file.
-    with open("index.md", "w") as file:
-        file.write("title: Index\n\n")
+    with open(index_file, "w") as file:
+        file.write(index_header)
 
         for post in posts:
-            file.write("[{}]({}) ({})\n\n".format(post.title,
-                post.filename + ".html", post.date))
+            file.write(index_post_entry.format(post.title,
+                post.filename + html_ext, post.date))
 
 
 def check_dirs():
@@ -187,21 +208,21 @@ def check_dirs():
     Returns:
         None
     """
-    if not os.path.exists("output/blog/"):
-        os.makedirs("output/blog/")
+    if not os.path.exists(output_dir + os.path.sep + blog_dir):
+        os.makedirs(output_dir + os.path.sep + blog_dir)
 
 
 if __name__ == "__main__":
     check_dirs()
 
-    blog_posts = get_posts("blog/*.md")
+    blog_posts = get_posts(blog_dir + os.path.sep + "*" + md_ext)
 
     for post in blog_posts:
         post.render_html("blog")
 
     generate_index_file(blog_posts)
 
-    meta_posts = get_posts("*.md")
+    meta_posts = get_posts("*" + md_ext)
 
     for post in meta_posts:
         post.render_html("meta")
