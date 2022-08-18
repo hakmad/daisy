@@ -202,7 +202,11 @@ def generate_index_file(posts):
 
 
 def check_dirs():
-    """Checks if certain directories exist, and if not, creates them.
+    """Checks certain information about directories.
+
+    The specific information is as follows:
+    - Which directory are we in? Move to the base directory if need be.
+    - Are any directories missing? Create them if need be.
 
     Arguments:
         None
@@ -210,6 +214,11 @@ def check_dirs():
     Returns:
         None
     """
+    # Check which directory we are in, move up if need be.
+    if blog_dir in os.getcwd():
+        os.chdir("..")
+
+    # Check and create output directories.
     if not os.path.exists(output_dir + os.path.sep + blog_dir):
         os.makedirs(output_dir + os.path.sep + blog_dir)
 
