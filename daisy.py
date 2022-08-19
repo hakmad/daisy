@@ -7,6 +7,7 @@ A CLI static site generator written in Python.
 """
 
 
+import argparse
 import glob
 import jinja2
 import markdown
@@ -223,17 +224,55 @@ def check_dirs():
         os.makedirs(output_dir + os.path.sep + blog_dir)
 
 
+### Main program. ###
+
 if __name__ == "__main__":
+    # Check directories before starting argument parsing.
     check_dirs()
 
-    blog_posts = get_posts(blog_dir + os.path.sep + "*" + md_ext)
+    # Setup parser with options.
+    parser = argparse.ArgumentParser()
 
-    for post in blog_posts:
-        post.render_html("blog")
+    options = parser.add_mutually_exclusive_group(required=True)
 
-    generate_index_file(blog_posts)
+    options.add_argument("-a", "--all", action="store_true", dest="all", help="convert all files")
+    options.add_argument("-s", "--single", nargs="?", metavar="file", dest="single", help="convert one file")
 
-    meta_posts = get_posts("*" + md_ext)
+    # Parse arguments and decide what to do.
+    args = parser.parse_args()
 
-    for post in meta_posts:
-        post.render_html("meta")
+    # Render all posts.
+    if args.all:
+        print("Rendering all posts to HTML")
+
+        blog_posts = get_posts(blog_dir + os.path.sep + "*" + md_ext)
+    
+        for post in blog_posts:
+            print("Rendering {}".format(post.filename + md_ext))
+            post.render_html("blog")
+
+        print("Generating index file")
+        generate_index_file(blog_posts)
+    
+        meta_posts = get_posts("*" + md_ext)
+    
+        for post in meta_posts:
+            print("Rendering {}".format(post.filename + md_ext))
+            post.render_html("meta")
+
+    # Render a single post.
+    elif args.single:
+        filename = blog_dir + os.path.sep + args.single
+
+        print("Rendering {} to HTML".format(filename))
+        
+        blog_post = get_post(filename)
+        blog_post.render_html("blog")
+
+        print("Adding {} to index file".format(filename))
+        add_to_index_file(blog_post)
+
+        print("Rendering {} to HTML".format(index_file))
+
+        index = get_post(index_file)
+        index.render_html("meta")
