@@ -31,7 +31,7 @@ md_ext = ".md"
 
 # Miscellaneous.
 index_header = "title: Index\n\n"
-index_post_entry = "[{}]({}) ({})"
+index_post_entry = "[{}]({}) ({})\n\n"
 
 
 ### Classes. ###
