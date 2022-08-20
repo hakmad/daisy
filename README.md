@@ -1,7 +1,13 @@
 # daisy
-A CLI static site generator written in Python.
+`daisy` is a CLI static site generator written in Python.
 
-## Expected Directory Structure
+## Usage
+To convert all files, do: `daisy -a` or `daisy --all`.
+
+To convert a single file, do: `daisy -s [file]` or `daisy --single [file]`.
+
+### Expected Directory Structure
+`daisy` expects the following directory structure:
 
 ```
 templates/
@@ -14,3 +20,9 @@ blog/
 index.md
 about.md
 ```
+
+## Licence
+
+This project is licensed under the
+[MIT license](https://github.com/hakmad/daisy/blob/main/LICENSE). See
+`LICENSE` for details.
