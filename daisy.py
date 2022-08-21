@@ -8,6 +8,7 @@ A CLI static site generator written in Python.
 
 
 import argparse
+import distutils
 import glob
 import jinja2
 import markdown
@@ -24,6 +25,7 @@ ignored_files = ["README.md"]
 blog_dir = "blog"
 template_dir = "templates"
 output_dir = "output"
+content_dir = "content"
 
 # Extensions.
 html_ext = ".html"
@@ -224,11 +226,30 @@ def check_dirs():
         os.makedirs(output_dir + os.path.sep + blog_dir)
 
 
+def copy_content_files():
+    """Copies files from the content directory to the output directory.
+
+    Arguments:
+        None
+
+    Returns:
+        None
+    """
+    try:
+        distutils.dir_util.copy_tree(contents_dir,
+                                     output_dir + os.path.sep + contents_dir)
+    except distutils.errors.DistutilsFileError:
+        pass
+
+
 ### Main program. ###
 
 if __name__ == "__main__":
     # Check directories before starting argument parsing.
     check_dirs()
+
+    # Copy contents files before starting argument parsing.
+    copy_content_files()
 
     # Setup parser with options.
     parser = argparse.ArgumentParser()
