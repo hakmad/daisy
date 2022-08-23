@@ -300,6 +300,11 @@ def main():
         meta_filename = args.single
         blog_filename = BLOG_DIR + os.path.sep + args.single
 
+        # Check if post is to be ignored.
+        if (meta_filename or blog_filename) in IGNORED_FILES:
+            print(f"{args.single} in IGNORED_FILES, exiting")
+            exit()
+
         # Check where the post actually is.
         if os.path.exists(blog_filename):
             # Rendering a blog post.
