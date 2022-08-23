@@ -62,6 +62,9 @@ class Post:
         Returns:
             None
         """
+        # Create empty HTML attribute.
+        self.html = None
+
         # Drop last three characters of the filename, they're not needed.
         self.filename = filename[:-3]
 
@@ -176,7 +179,7 @@ def add_to_index_file(post):
             entry = INDEX_POST_ENTRY.format(post.title,
                     post.filename + HTML_EXT, post.date)
 
-            new_data = insert_str(data, entry, index)
+            new_data = insert_string(data, entry, index)
 
             # Empty and rewrite the file.
             file.seek(0)
