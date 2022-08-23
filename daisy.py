@@ -249,7 +249,9 @@ def copy_content_files():
 
 ### Main program. ###
 
-if __name__ == "__main__":
+def main():
+    """Main program."""
+
     # Check directories before starting argument parsing.
     check_dirs()
 
@@ -303,3 +305,7 @@ if __name__ == "__main__":
 
         index = get_post(INDEX_FILE)
         index.render_html("meta")
+
+
+if __name__ == "__main__":
+    main()
