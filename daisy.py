@@ -303,7 +303,7 @@ def main():
         print(f"Adding {filename} to index file")
         add_to_index_file(blog_post)
 
-        print("Rendering {INDEX_FILE} to HTML")
+        print(f"Rendering {INDEX_FILE} to HTML")
 
         index = get_post(INDEX_FILE)
         index.render_html("meta")
