@@ -33,6 +33,7 @@ HTML_EXT = ".html"
 MD_EXT = ".md"
 
 # Miscellaneous.
+ENCODING="utf-8"
 INDEX_HEADER = "title: Index\n\n"
 INDEX_POST_ENTRY = "[{}]({}) ({})\n\n"
 
@@ -69,7 +70,7 @@ class Post:
         self.filename = filename[:-3]
 
         # Open and convert the file to a HTML fragment.
-        with open(filename, "r") as file:
+        with open(filename, "r", encoding=ENCODING) as file:
             md_reader = markdown.Markdown(extensions=["meta", "fenced_code"])
 
             self.content = md_reader.convert(file.read())
@@ -99,7 +100,7 @@ class Post:
         template_file = TEMPLATE_DIR + os.path.sep + post_type + HTML_EXT
 
         # Render the HTML to the template.
-        with open(template_file, "r") as file:
+        with open(template_file, "r", encoding=ENCODING) as file:
             template = jinja2.Template(file.read())
 
             self.html = template.render({
@@ -110,7 +111,7 @@ class Post:
 
         # Write out full HTML to file.
         output_file = OUTPUT_DIR + os.path.sep + self.filename + HTML_EXT
-        with open(output_file, "w") as file:
+        with open(output_file, "w", encoding=ENCODING) as file:
             file.write(self.html)
 
 
@@ -170,7 +171,7 @@ def add_to_index_file(post):
     Returns:
         None
     """
-    with open(INDEX_FILE, "r+") as file:
+    with open(INDEX_FILE, "r+", encoding=ENCODING) as file:
         data = file.read()
 
         # Check if post is already in the index file.
@@ -200,7 +201,7 @@ def generate_index_file(posts):
     posts.sort(key=lambda post: post.date, reverse=True)
 
     # Write index file.
-    with open(INDEX_FILE, "w") as file:
+    with open(INDEX_FILE, "w", encoding=ENCODING) as file:
         file.write(INDEX_HEADER)
 
         for post in posts:
