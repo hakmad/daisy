@@ -281,18 +281,19 @@ def main():
 
         blog_posts = get_posts(BLOG_DIR + os.path.sep + "*" + MD_EXT)
 
-        for post in blog_posts:
-            print(f"Rendering {post.filename + MD_EXT}")
-            post.render_html("blog")
+        if len(blog_posts) > 0:
+            for post in blog_posts:
+                print(f"Rendering {post.filename + MD_EXT}")
+                post.render_html("blog")
 
-        print("Generating index file")
-        generate_index_file(blog_posts)
+            print("Generating index file")
+            generate_index_file(blog_posts)
 
-        meta_posts = get_posts("*" + MD_EXT)
+            meta_posts = get_posts("*" + MD_EXT)
 
-        for post in meta_posts:
-            print(f"Rendering {post.filename + MD_EXT}")
-            post.render_html("meta")
+            for post in meta_posts:
+                print(f"Rendering {post.filename + MD_EXT}")
+                post.render_html("meta")
 
     # Render a single post.
     elif args.single:
