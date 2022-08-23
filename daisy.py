@@ -11,6 +11,7 @@ import argparse
 import distutils
 import glob
 import os
+import sys
 
 import jinja2
 import markdown
@@ -169,7 +170,7 @@ def add_to_index_file(post):
     """Add a post to the top of the index file.
 
     Arguments:
-        post (Post) - post to add to the index file.
+        post (Post): post to add to the index file.
 
     Returns:
         None
@@ -195,7 +196,7 @@ def generate_index_file(posts):
     """Create an index file from a list of posts.
 
     Arguments:
-        posts ([Post]) - list of posts to put in the index file.
+        posts ([Post]): list of posts to put in the index file.
 
     Returns:
         None
@@ -253,6 +254,80 @@ def copy_content_files():
         pass
 
 
+def render_all_posts():
+    """Render all posts.
+
+    Arguments:
+        None
+
+    Returns:
+        None
+    """
+    blog_posts = get_posts(BLOG_DIR + os.path.sep + "*" + MD_EXT)
+
+    if len(blog_posts) > 0:
+        print("Rendering all posts to HTML")
+        for post in blog_posts:
+            print(f"Rendering {post.filename + MD_EXT}")
+            post.render_html("blog")
+
+        print("Generating index file")
+        generate_index_file(blog_posts)
+
+        meta_posts = get_posts("*" + MD_EXT)
+
+        for post in meta_posts:
+            print(f"Rendering {post.filename + MD_EXT}")
+            post.render_html("meta")
+    else:
+        print("No posts found, exiting")
+
+
+def render_single_post(filename):
+    """Render a single post.
+
+    Arguments:
+        filename (str): filename of post to render.
+
+    Returns:
+        None
+    """
+    meta_filename = filename
+    blog_filename = BLOG_DIR + os.path.sep + filename
+
+    # Check if post is to be ignored.
+    if (meta_filename or blog_filename) in IGNORED_FILES:
+        print(f"{filename} in IGNORED_FILES, exiting")
+        sys.exit()
+
+    # Check where the post actually is.
+    if os.path.exists(blog_filename):
+        # Rendering a blog post.
+        print(f"Rendering {blog_filename} to HTML")
+
+        blog_post = get_post(blog_filename)
+        blog_post.render_html("blog")
+
+        print(f"Adding {blog_filename} to index file")
+        add_to_index_file(blog_post)
+
+        print(f"Rendering {INDEX_FILE} to HTML")
+
+        index = get_post(INDEX_FILE)
+        index.render_html("meta")
+
+    elif os.path.exists(meta_filename):
+        # Rendering a meta post.
+        print(f"Rendering {meta_filename} to HTML")
+
+        meta_post = get_post(meta_filename)
+        meta_post.render_html("meta")
+
+    else:
+        # Post doesn't exist, raise an error.
+        raise FileNotFoundError(f"{filename} not found!")
+
+
 ### Main program. ###
 
 def main():
@@ -279,60 +354,11 @@ def main():
 
     # Render all posts.
     if args.all:
-        print("Rendering all posts to HTML")
-
-        blog_posts = get_posts(BLOG_DIR + os.path.sep + "*" + MD_EXT)
-
-        if len(blog_posts) > 0:
-            for post in blog_posts:
-                print(f"Rendering {post.filename + MD_EXT}")
-                post.render_html("blog")
-
-            print("Generating index file")
-            generate_index_file(blog_posts)
-
-            meta_posts = get_posts("*" + MD_EXT)
-
-            for post in meta_posts:
-                print(f"Rendering {post.filename + MD_EXT}")
-                post.render_html("meta")
+        render_all_posts()
 
     # Render a single post.
     elif args.single:
-        meta_filename = args.single
-        blog_filename = BLOG_DIR + os.path.sep + args.single
-
-        # Check if post is to be ignored.
-        if (meta_filename or blog_filename) in IGNORED_FILES:
-            print(f"{args.single} in IGNORED_FILES, exiting")
-            exit()
-
-        # Check where the post actually is.
-        if os.path.exists(blog_filename):
-            # Rendering a blog post.
-            print(f"Rendering {blog_filename} to HTML")
-
-            blog_post = get_post(blog_filename)
-            blog_post.render_html("blog")
-
-            print(f"Adding {blog_filename} to index file")
-            add_to_index_file(blog_post)
-
-            print(f"Rendering {INDEX_FILE} to HTML")
-
-            index = get_post(INDEX_FILE)
-            index.render_html("meta")
-
-        elif os.path.exists(meta_filename):
-            # Rendering a meta post.
-            print(f"Rendering {meta_filename} to HTML")
-
-            meta_post = get_post(meta_filename)
-            meta_post.render_html("meta")
-
-        else:
-            # Post doesn't exist, raise an error.
-            raise FileNotFoundError(f"{args.single} not found!")
+        render_single_post(args.single)
 
 
 if __name__ == "__main__":
