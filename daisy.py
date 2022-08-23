@@ -44,7 +44,8 @@ class Post:
     """Class to represent a single post.
 
     Attributes:
-        filename (str): filename of the post (not including the extension).
+        filename (str): filename of the post (not including the
+            extension).
         content (str): content of the post as a HTML fragment.
         html (str): fully rendered HTML of the post.
         title (str): title of the post.
@@ -66,7 +67,7 @@ class Post:
         # Create empty HTML attribute.
         self.html = None
 
-        # Drop last three characters of the filename, they're not needed.
+        # Drop the last three characters of the filename.
         self.filename = filename[:-3]
 
         # Open and convert the file to a HTML fragment.
@@ -77,7 +78,7 @@ class Post:
 
             self.title = md_reader.Meta["title"].pop()
 
-            # Attempt to get the date. If the date doesn't exist, then just
+            # Attempt to get the date. If the date doesn't exist, then
             # set the date attribute to None.
             try:
                 self.date = md_reader.Meta["date"].pop()
@@ -242,7 +243,7 @@ def copy_content_files():
     """
     try:
         distutils.dir_util.copy_tree(CONTENT_DIR,
-                                     OUTPUT_DIR + os.path.sep + CONTENT_DIR)
+                OUTPUT_DIR + os.path.sep + CONTENT_DIR)
     except distutils.errors.DistutilsFileError:
         pass
 
@@ -263,7 +264,8 @@ def main():
 
     options = parser.add_mutually_exclusive_group(required=True)
 
-    options.add_argument("-a", "--all", action="store_true", dest="all", help="convert all files")
+    options.add_argument("-a", "--all", action="store_true", dest="all",
+                         help="convert all files")
     options.add_argument("-s", "--single", nargs="?", metavar="file",
                          dest="single", help="convert one file")
 
