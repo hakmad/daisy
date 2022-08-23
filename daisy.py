@@ -227,6 +227,9 @@ def check_dirs():
     if BLOG_DIR in os.getcwd():
         os.chdir("..")
 
+    if not os.path.exists(TEMPLATE_DIR):
+        raise FileNotFoundError(f"{} not found!")
+
     # Check and create output directories.
     if not os.path.exists(OUTPUT_DIR + os.path.sep + BLOG_DIR):
         os.makedirs(OUTPUT_DIR + os.path.sep + BLOG_DIR)
