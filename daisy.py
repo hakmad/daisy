@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 """
 Static Site Generator
 
@@ -371,7 +369,3 @@ def main():
     # Render a single post.
     elif cli_arguments.single:
         render_single_post(cli_arguments.single)
-
-
-if __name__ == "__main__":
-    main()
