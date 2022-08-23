@@ -215,7 +215,7 @@ def check_dirs():
 
     The specific information is as follows:
     - Which directory are we in? Move to the base directory if need be.
-    - Are any directories missing? Create them if need be.
+    - Are any directories missing? Create them possible.
 
     Arguments:
         None
@@ -228,7 +228,7 @@ def check_dirs():
         os.chdir("..")
 
     if not os.path.exists(TEMPLATE_DIR):
-        raise FileNotFoundError(f"{} not found!")
+        raise FileNotFoundError(f"{TEMPLATE_DIR} not found!")
 
     # Check and create output directories.
     if not os.path.exists(OUTPUT_DIR + os.path.sep + BLOG_DIR):
