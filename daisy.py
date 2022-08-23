@@ -254,6 +254,29 @@ def copy_content_files():
         pass
 
 
+def parse_arguments():
+    """Parse arguments using argparse.
+
+    Arguments:
+        None
+
+    Returns:
+        argparse.Namespace: an empty Namespace object containing the
+            arguments as variables.
+    """
+    parser = argparse.ArgumentParser()
+
+    # Setup parser with options.
+    options = parser.add_mutually_exclusive_group(required=True)
+    options.add_argument("-a", "--all", action="store_true", dest="all",
+                         help="convert all files")
+    options.add_argument("-s", "--single", nargs="?", metavar="file",
+                         dest="single", help="convert one file")
+
+    # Return parsed arguments:
+    return parser.parse_args()
+
+
 def render_all_posts():
     """Render all posts.
 
@@ -339,26 +362,15 @@ def main():
     # Copy contents files before starting argument parsing.
     copy_content_files()
 
-    # Setup parser with options.
-    parser = argparse.ArgumentParser()
-
-    options = parser.add_mutually_exclusive_group(required=True)
-
-    options.add_argument("-a", "--all", action="store_true", dest="all",
-                         help="convert all files")
-    options.add_argument("-s", "--single", nargs="?", metavar="file",
-                         dest="single", help="convert one file")
-
-    # Parse arguments and decide what to do.
-    args = parser.parse_args()
+    cli_arguments = parse_arguments()
 
     # Render all posts.
-    if args.all:
+    if cli_arguments.all:
         render_all_posts()
 
     # Render a single post.
-    elif args.single:
-        render_single_post(args.single)
+    elif cli_arguments.single:
+        render_single_post(cli_arguments.single)
 
 
 if __name__ == "__main__":
