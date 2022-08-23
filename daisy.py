@@ -271,7 +271,7 @@ if __name__ == "__main__":
         blog_posts = get_posts(BLOG_DIR + os.path.sep + "*" + MD_EXT)
 
         for post in blog_posts:
-            print("Rendering {}".format(post.filename + MD_EXT))
+            print(f"Rendering {post.filename + MD_EXT}")
             post.render_html("blog")
 
         print("Generating index file")
@@ -280,22 +280,22 @@ if __name__ == "__main__":
         meta_posts = get_posts("*" + MD_EXT)
 
         for post in meta_posts:
-            print("Rendering {}".format(post.filename + MD_EXT))
+            print(f"Rendering {post.filename + MD_EXT}")
             post.render_html("meta")
 
     # Render a single post.
     elif args.single:
         filename = BLOG_DIR + os.path.sep + args.single
 
-        print("Rendering {} to HTML".format(filename))
+        print(f"Rendering {filename} to HTML")
 
         blog_post = get_post(filename)
         blog_post.render_html("blog")
 
-        print("Adding {} to index file".format(filename))
+        print(f"Adding {filename} to index file")
         add_to_index_file(blog_post)
 
-        print("Rendering {} to HTML".format(INDEX_FILE))
+        print("Rendering {INDEX_FILE} to HTML")
 
         index = get_post(INDEX_FILE)
         index.render_html("meta")
