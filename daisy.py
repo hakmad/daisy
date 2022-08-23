@@ -157,7 +157,9 @@ def get_posts(path):
     post_list = []
 
     for file in glob.glob(path):
-        if file not in IGNORED_FILES:
+        if file in IGNORED_FILES:
+            print(f"{file} in IGNORED_FILES, skipping")
+        else:
             post_list.append(Post(file))
 
     return post_list
