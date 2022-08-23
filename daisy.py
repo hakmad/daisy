@@ -10,30 +10,31 @@ A CLI static site generator written in Python.
 import argparse
 import distutils
 import glob
+import os
+
 import jinja2
 import markdown
-import os
 
 
 ### Global variables. ###
 
 # Files.
-index_file = "index.md"
-ignored_files = ["README.md"]
+INDEX_FILE = "index.md"
+IGNORED_FILES = ["README.md"]
 
 # Directories.
-blog_dir = "blog"
-template_dir = "templates"
-output_dir = "output"
-content_dir = "content"
+BLOG_DIR = "blog"
+TEMPLATE_DIR = "templates"
+OUTPUT_DIR = "output"
+CONTENT_DIR = "content"
 
 # Extensions.
-html_ext = ".html"
-md_ext = ".md"
+HTML_EXT = ".html"
+MD_EXT = ".md"
 
 # Miscellaneous.
-index_header = "title: Index\n\n"
-index_post_entry = "[{}]({}) ({})\n\n"
+INDEX_HEADER = "title: Index\n\n"
+INDEX_POST_ENTRY = "[{}]({}) ({})\n\n"
 
 
 ### Classes. ###
@@ -71,7 +72,7 @@ class Post:
             self.content = md_reader.convert(file.read())
 
             self.title = md_reader.Meta["title"].pop()
-            
+
             # Attempt to get the date. If the date doesn't exist, then just
             # set the date attribute to None.
             try:
@@ -92,7 +93,7 @@ class Post:
             None
         """
         # Open the relevant template file.
-        template_file = template_dir + os.path.sep + post_type + html_ext
+        template_file = TEMPLATE_DIR + os.path.sep + post_type + HTML_EXT
 
         # Render the HTML to the template.
         with open(template_file, "r") as file:
@@ -105,7 +106,7 @@ class Post:
                 })
 
         # Write out full HTML to file.
-        output_file = output_dir + os.path.sep + self.filename + html_ext
+        output_file = OUTPUT_DIR + os.path.sep + self.filename + HTML_EXT
         with open(output_file, "w") as file:
             file.write(self.html)
 
@@ -149,9 +150,9 @@ def get_posts(path):
         [Post]: a list of Post objects.
     """
     post_list = []
-    
+
     for file in glob.glob(path):
-        if file not in ignored_files:
+        if file not in IGNORED_FILES:
             post_list.append(Post(file))
 
     return post_list
@@ -166,14 +167,14 @@ def add_to_index_file(post):
     Returns:
         None
     """
-    with open(index_file, "r+") as file:
+    with open(INDEX_FILE, "r+") as file:
         data = file.read()
-        
+
         # Check if post is already in the index file.
         if post.filename not in data:
-            index = len(index_header)
-            entry = index_post_entry.format(post.title,
-                    post.filename + html_ext, post.date)
+            index = len(INDEX_HEADER)
+            entry = INDEX_POST_ENTRY.format(post.title,
+                    post.filename + HTML_EXT, post.date)
 
             new_data = insert_str(data, entry, index)
 
@@ -196,12 +197,12 @@ def generate_index_file(posts):
     posts.sort(key=lambda post: post.date, reverse=True)
 
     # Write index file.
-    with open(index_file, "w") as file:
-        file.write(index_header)
+    with open(INDEX_FILE, "w") as file:
+        file.write(INDEX_HEADER)
 
         for post in posts:
-            file.write(index_post_entry.format(post.title,
-                post.filename + html_ext, post.date))
+            file.write(INDEX_POST_ENTRY.format(post.title,
+                post.filename + HTML_EXT, post.date))
 
 
 def check_dirs():
@@ -218,12 +219,12 @@ def check_dirs():
         None
     """
     # Check which directory we are in, move up if need be.
-    if blog_dir in os.getcwd():
+    if BLOG_DIR in os.getcwd():
         os.chdir("..")
 
     # Check and create output directories.
-    if not os.path.exists(output_dir + os.path.sep + blog_dir):
-        os.makedirs(output_dir + os.path.sep + blog_dir)
+    if not os.path.exists(OUTPUT_DIR + os.path.sep + BLOG_DIR):
+        os.makedirs(OUTPUT_DIR + os.path.sep + BLOG_DIR)
 
 
 def copy_content_files():
@@ -236,8 +237,8 @@ def copy_content_files():
         None
     """
     try:
-        distutils.dir_util.copy_tree(content_dir,
-                                     output_dir + os.path.sep + content_dir)
+        distutils.dir_util.copy_tree(CONTENT_DIR,
+                                     OUTPUT_DIR + os.path.sep + CONTENT_DIR)
     except distutils.errors.DistutilsFileError:
         pass
 
@@ -257,7 +258,8 @@ if __name__ == "__main__":
     options = parser.add_mutually_exclusive_group(required=True)
 
     options.add_argument("-a", "--all", action="store_true", dest="all", help="convert all files")
-    options.add_argument("-s", "--single", nargs="?", metavar="file", dest="single", help="convert one file")
+    options.add_argument("-s", "--single", nargs="?", metavar="file",
+                         dest="single", help="convert one file")
 
     # Parse arguments and decide what to do.
     args = parser.parse_args()
@@ -266,34 +268,34 @@ if __name__ == "__main__":
     if args.all:
         print("Rendering all posts to HTML")
 
-        blog_posts = get_posts(blog_dir + os.path.sep + "*" + md_ext)
-    
+        blog_posts = get_posts(BLOG_DIR + os.path.sep + "*" + MD_EXT)
+
         for post in blog_posts:
-            print("Rendering {}".format(post.filename + md_ext))
+            print("Rendering {}".format(post.filename + MD_EXT))
             post.render_html("blog")
 
         print("Generating index file")
         generate_index_file(blog_posts)
-    
-        meta_posts = get_posts("*" + md_ext)
-    
+
+        meta_posts = get_posts("*" + MD_EXT)
+
         for post in meta_posts:
-            print("Rendering {}".format(post.filename + md_ext))
+            print("Rendering {}".format(post.filename + MD_EXT))
             post.render_html("meta")
 
     # Render a single post.
     elif args.single:
-        filename = blog_dir + os.path.sep + args.single
+        filename = BLOG_DIR + os.path.sep + args.single
 
         print("Rendering {} to HTML".format(filename))
-        
+
         blog_post = get_post(filename)
         blog_post.render_html("blog")
 
         print("Adding {} to index file".format(filename))
         add_to_index_file(blog_post)
 
-        print("Rendering {} to HTML".format(index_file))
+        print("Rendering {} to HTML".format(INDEX_FILE))
 
-        index = get_post(index_file)
+        index = get_post(INDEX_FILE)
         index.render_html("meta")
