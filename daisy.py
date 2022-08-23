@@ -293,20 +293,35 @@ def main():
 
     # Render a single post.
     elif args.single:
-        filename = BLOG_DIR + os.path.sep + args.single
+        meta_filename = args.single
+        blog_filename = BLOG_DIR + os.path.sep + args.single
 
-        print(f"Rendering {filename} to HTML")
+        # Check where the post actually is.
+        if os.path.exists(blog_filename):
+            # Rendering a blog post.
+            print(f"Rendering {blog_filename} to HTML")
 
-        blog_post = get_post(filename)
-        blog_post.render_html("blog")
+            blog_post = get_post(blog_filename)
+            blog_post.render_html("blog")
 
-        print(f"Adding {filename} to index file")
-        add_to_index_file(blog_post)
+            print(f"Adding {blog_filename} to index file")
+            add_to_index_file(blog_post)
 
-        print(f"Rendering {INDEX_FILE} to HTML")
+            print(f"Rendering {INDEX_FILE} to HTML")
 
-        index = get_post(INDEX_FILE)
-        index.render_html("meta")
+            index = get_post(INDEX_FILE)
+            index.render_html("meta")
+
+        elif os.path.exists(meta_filename):
+            # Rendering a meta post.
+            print(f"Rendering {meta_filename} to HTML")
+
+            meta_post = get_post(meta_filename)
+            meta_post.render_html("meta")
+
+        else:
+            # Post doesn't exist, raise an error.
+            raise FileNotFoundError(f"{args.single} not found!")
 
 
 if __name__ == "__main__":
