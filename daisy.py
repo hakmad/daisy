@@ -23,9 +23,9 @@ IGNORED_FILES = ["README.md"]
 
 # Directories.
 BLOG_DIR = "blog"
-TEMPLATE_DIR = "templates"
-OUTPUT_DIR = "output"
-CONTENT_DIR = "content"
+TEMPLATE_DIR = ".templates"
+OUTPUT_DIR = ".output"
+CONTENT_DIR = ".content"
 
 # Extensions.
 HTML_EXT = ".html"
