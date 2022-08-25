@@ -247,7 +247,7 @@ def copy_content_files():
     """
     try:
         distutils.dir_util.copy_tree(CONTENT_DIR,
-                OUTPUT_DIR + os.path.sep + CONTENT_DIR)
+            OUTPUT_DIR + os.path.sep + CONTENT_DIR[1:])
     except distutils.errors.DistutilsFileError:
         pass
 
