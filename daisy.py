@@ -360,6 +360,7 @@ def main():
     # Copy contents files before starting argument parsing.
     copy_content_files()
 
+    # Parse arguments.
     cli_arguments = parse_arguments()
 
     # Render all posts.
