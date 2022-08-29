@@ -353,15 +353,14 @@ def render_single_post(filename):
 
 def main():
     """Main program."""
+    # Parse arguments.
+    cli_arguments = parse_arguments()
 
     # Check directories before starting argument parsing.
     check_dirs()
 
     # Copy contents files before starting argument parsing.
     copy_content_files()
-
-    # Parse arguments.
-    cli_arguments = parse_arguments()
 
     # Render all posts.
     if cli_arguments.all:
