@@ -22,24 +22,24 @@ To render all posts, do: `daisy -a` or `daisy --all`. This will:
 1. Recursively copy `.content/` to `.output/content/`.
 2. Render all Markdown files in `blog/` using the `blog.html` template and
    place them in the `.output/blog/`.
-3. Produce a new `index.md` with links to all the posts in the `blog/` in
+3. Produce a new `index.md` with links to all the posts in `.output/blog/` in
    reverse chronological order.
 4. Render all Markdown files in the top level directory using the
    `meta.html` template and place them in the `.output/`.
 
-### Render a Single Posts
+### Render a Single Post
 
-To render a single posts, do: `daisy -s [post]` or `daisy --single [post]`.
+To render a single post, do: `daisy -s [post]` or `daisy --single [post]`.
 This will:
 
 1. Recursively copy `.content/` to `.output/content/`.
-2. If `[file]` is in `blog/`:
-   - Render `[file]` using the `blog.html` template and place it in
+2. If `[post]` is in `blog/`:
+   - Render `[post]` using the `blog.html` template and place it in
      `.output/blog/`.
-   - Add a link to the rendered `[file]` to the top of `index.md` and
+   - Add a link to the rendered `[post]` to the top of `index.md` and
      re-render `index.md`.
-3. Otherwise, if `[file]` is in the top level directory:
-   - Render `[file]` using the `meta.html` template and place it in
+3. Otherwise, if `[post]` is in the top level directory:
+   - Render `[post]` using the `meta.html` template and place it in
      `.output/`.
 
 ## Configuration
@@ -79,16 +79,19 @@ title: [title]
     favicon.ico
     images/
     	...
-.templates/
-    meta.html
-    post.html
+.templates/ *
+    meta.html *
+    post.html *
 blog/
     post-1.md
     post-2.md
     ...
-index.md
+index.md +
 about.md
 ```
+
+Items marked with `*` are required and items marked with `+` are automatically
+generated.
 
 ### Output
 
