@@ -1,12 +1,24 @@
 # daisy
 `daisy` is a CLI static site generator written in Python.
 
+## Installation
+
+To install, do:
+
+```
+git clone https://github.com/hakmad/daisy
+cd daisy
+pip install .
+```
+
 ## Usage
+
 To convert all files, do: `daisy -a` or `daisy --all`.
 
 To convert a single file, do: `daisy -s [file]` or `daisy --single [file]`.
 
 ### Expected Directory Structure
+
 `daisy` expects the following directory structure:
 
 ```
