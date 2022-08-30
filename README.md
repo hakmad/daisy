@@ -34,13 +34,13 @@ This will:
 
 1. Recursively copy `.content/` to `.output/content/`.
 2. If `[file]` is in `blog/`:
-    a. Render `[file]` using the `blog.html` template and place it in
-       `.output/blog/`.
-    b. Add a link to the rendered `[file]` to the top of `index.md` and
-       re-render `index.md`.
+   - Render `[file]` using the `blog.html` template and place it in
+     `.output/blog/`.
+   - Add a link to the rendered `[file]` to the top of `index.md` and
+     re-render `index.md`.
 3. Otherwise, if `[file]` is in the top level directory:
-    a. Render `[file]` using the `meta.html` template and place it in
-       `.output/`.
+   - Render `[file]` using the `meta.html` template and place it in
+     `.output/`.
 
 ## Configuration
 
