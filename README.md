@@ -42,9 +42,9 @@ This will:
    - Render `[post]` using the `meta.html` template and place it in
      `.output/`.
 
-## Configuration
+## Behaviour and Expectations
 
-The following sections describe the configuration of `daisy`.
+The following sections describe the behaviour of `daisy` and what it expects.
 
 ### Blog Post Structure
 
