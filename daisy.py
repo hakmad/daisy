@@ -6,9 +6,9 @@ A CLI static site generator written in Python.
 
 
 import argparse
-import configparser
 import distutils
 import glob
+import json
 import os
 import sys
 
@@ -19,7 +19,7 @@ import markdown
 ### Global variables. ###
 
 # Configuration dictionary.
-config = configparser.ConfigParser()
+config = {}
 
 # Files.
 INDEX_FILE = "index.md"
@@ -224,18 +224,19 @@ def read_config_file():
     Returns:
         None
     """
-    # Create filepath string for configuration file.
+    # Create a file path string for configuration file.
     config_file_path = (os.path.expanduser("~") + os.path.sep
                         + "config" + os.path.sep
                         + "daisy" + os.path.sep
                         + "config")
 
-    # Check if filepath is valid.
+    # Check if the filepath is valid.
     if not os.path.exists(config_file_path):
         raise FileNotFoundError(f"{config_file_path} not found!")
 
     # Read configuration file.
-    config.read(config_file_path)
+    with open(config_file_path, "r") as file:
+        config.update(json.load(file))
 
 
 def check_dirs():
