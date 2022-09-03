@@ -228,7 +228,7 @@ def read_config_file():
     config_file_path = (os.path.expanduser("~") + os.path.sep
                         + "config" + os.path.sep
                         + "daisy" + os.path.sep
-                        + "config")
+                        + "config.json")
 
     # Check if the filepath is valid.
     if not os.path.exists(config_file_path):
