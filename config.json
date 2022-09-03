@@ -1,0 +1,17 @@
+{
+	"encoding": "utf-8",
+	"index_file": "index.md",
+	"ignored_files": [
+		"README.md"
+	],
+	"dirs": {
+		"blog": "blog",
+		"content": ".content",
+		"template": ".templates",
+		"output": ".output"
+	},
+	"ext": {
+		"html": ".html",
+		"md": ".md"
+	}
+}
