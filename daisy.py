@@ -384,7 +384,9 @@ def main():
     # Parse arguments.
     cli_arguments = parse_arguments()
 
-    # Check directories before starting argument parsing.
+    # Read configuration file and check directories before starting
+    # argument parsing.
+    read_config_file()
     check_dirs()
 
     # Copy contents files before starting argument parsing.
