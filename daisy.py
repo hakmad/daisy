@@ -226,7 +226,7 @@ def read_config_file():
     """
     # Create a file path string for configuration file.
     config_file_path = (os.path.expanduser("~") + os.path.sep
-                        + "config" + os.path.sep
+                        + ".config" + os.path.sep
                         + "daisy" + os.path.sep
                         + "config.json")
 
