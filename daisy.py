@@ -86,7 +86,8 @@ class Post:
             None
         """
         # Open the relevant template file.
-        template_file = config["dirs"]["template"] + os.path.sep + post_type + config["ext"]["html"]
+        template_file = (config["dirs"]["template"] + os.path.sep + post_type
+                         + config["ext"]["html"])
 
         # Render the HTML to the template.
         with open(template_file, "r", encoding=config["encoding"]) as file:
@@ -99,7 +100,8 @@ class Post:
                 })
 
         # Write out full HTML to file.
-        output_file = config["dirs"]["output"] + os.path.sep + self.filename + config["ext"]["html"]
+        output_file = (config["dirs"]["output"] + os.path.sep + self.filename
+                       + config["ext"]["html"])
         with open(output_file, "w", encoding=config["encoding"]) as file:
             file.write(self.html)
 
@@ -245,8 +247,10 @@ def check_dirs():
         raise FileNotFoundError(f"{config['dirs']['template']} not found!")
 
     # Check and create output directories.
-    if not os.path.exists(config["dirs"]["output"] + os.path.sep + config["dirs"]["blog"]):
-        os.makedirs(config["dirs"]["output"] + os.path.sep + config["dirs"]["blog"])
+    if not os.path.exists(config["dirs"]["output"] + os.path.sep +
+                          config["dirs"]["blog"]):
+        os.makedirs(config["dirs"]["output"] + os.path.sep +
+                    config["dirs"]["blog"])
 
 
 def copy_content_files():
@@ -260,7 +264,8 @@ def copy_content_files():
     """
     try:
         distutils.dir_util.copy_tree(config["dirs"]["content"],
-            config["dirs"]["output"] + os.path.sep + config["dirs"]["content"][1:])
+            config["dirs"]["output"] + os.path.sep +
+            config["dirs"]["content"][1:])
     except distutils.errors.DistutilsFileError:
         pass
 
@@ -297,7 +302,8 @@ def render_all_posts():
     Returns:
         None
     """
-    blog_posts = get_posts(config["dirs"]["blog"] + os.path.sep + "*" + config["ext"]["md"])
+    blog_posts = get_posts(config["dirs"]["blog"] + os.path.sep + "*" +
+                           config["ext"]["md"])
 
     if len(blog_posts) > 0:
         print("Rendering all posts to HTML")
