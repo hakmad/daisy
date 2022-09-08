@@ -375,12 +375,10 @@ def main():
     # Parse arguments.
     cli_arguments = parse_arguments()
 
-    # Read configuration file and check directories before starting
-    # argument parsing.
+    # Read configuration file, check directories and copy contents files
+    # before starting argument handling.
     read_config_file()
     check_dirs()
-
-    # Copy contents files before starting argument parsing.
     copy_content_files()
 
     # Render all posts.
