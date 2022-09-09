@@ -270,6 +270,22 @@ def copy_content_files():
         pass
 
 
+def setup():
+    """Reads configuration file, checks directories and copies contents files.
+
+    Arguments:
+        None
+
+    Returns:
+        None
+    """
+    sys.tracebacklimit = 0
+
+    read_config_file()
+    check_dirs()
+    copy_content_files()
+
+
 def parse_arguments():
     """Parse arguments using argparse.
 
@@ -372,14 +388,11 @@ def render_single_post(filename):
 
 def main():
     """Main program."""
+    # Run setup.
+    setup()
+
     # Parse arguments.
     cli_arguments = parse_arguments()
-
-    # Read configuration file, check directories and copy contents files
-    # before starting argument handling.
-    read_config_file()
-    check_dirs()
-    copy_content_files()
 
     # Render all posts.
     if cli_arguments.all:
