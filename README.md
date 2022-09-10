@@ -42,6 +42,12 @@ This will:
    - Render `[post]` using the `meta.html` template and place it in
      `.output/`.
 
+## Configuration
+
+`daisy` is configured using a JSON file. It will look for this configuration
+file in `~/.config/daisy/config.json` and will exit if it does not find it.
+See `config.json` for a minimal but complete example.
+
 ## Behaviour and Expectations
 
 The following sections describe the behaviour of `daisy` and what it expects.
