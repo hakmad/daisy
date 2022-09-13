@@ -391,11 +391,11 @@ def render_single_post(filename):
 
 def main():
     """Main program."""
-    # Run setup.
-    setup()
-
     # Parse arguments.
     cli_arguments = parse_arguments()
+
+    # Run setup.
+    setup()
 
     # Render all posts.
     if cli_arguments.all:
