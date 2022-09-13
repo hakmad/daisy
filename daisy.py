@@ -296,7 +296,10 @@ def parse_arguments():
         argparse.Namespace: an empty Namespace object containing the
             arguments as variables.
     """
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+            description="A CLI static site generator written in Python.",
+            epilog="See https://github.com/hakmad/daisy for help."
+            )
 
     # Setup parser with options.
     options = parser.add_mutually_exclusive_group(required=True)
