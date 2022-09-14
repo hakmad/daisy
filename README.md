@@ -1,6 +1,17 @@
 # daisy
 `daisy` is a CLI static site generator written in Python.
 
+## Requirments
+
+`daisy` requires Python 3 or newer. It was developed on Python 3.10.7.
+
+Additionally, `daisy` also requires the following Python packages:
+- `Markdown`: to render Markdown to HTML.
+- `Jinja2`: for templating.
+
+These can be found on PyPI. For more details, see
+`[requirements.txt](requirements.txt)`.
+
 ## Installation
 
 To install, do:
