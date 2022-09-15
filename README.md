@@ -1,4 +1,5 @@
 # daisy
+
 `daisy` is a CLI static site generator written in Python.
 
 ## Requirments
@@ -132,6 +133,5 @@ contains the following:
 
 ## Licence
 
-This project is licensed under the
-[MIT license](https://github.com/hakmad/daisy/blob/main/LICENSE). See
-`LICENSE` for details.
+This project is licensed under the MIT license. See
+[`LICENSE`](https://github.com/hakmad/daisy/blob/main/LICENSE) for details.
