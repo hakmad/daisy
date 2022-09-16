@@ -195,6 +195,9 @@ def read_config_file():
 
     By default, daisy will look for configuration files in
     ~/.config/daisy/config.json.
+
+    Raises:
+        FileNotFoundError: when the configuration file cannot be found.
     """
     # Create a file path string for configuration file.
     config_file_path = (os.path.expanduser("~") + os.path.sep
@@ -217,6 +220,9 @@ def check_dirs():
     The specific information is as follows:
     - Which directory are we in? Move to the base directory if need be.
     - Are any directories missing? Create them possible.
+
+    Raises:
+        FileNotFoundError: when the template director cannot be found.
     """
     # Check which directory we are in, move up if need be.
     if config["dirs"]["blog"] in os.getcwd():
@@ -308,6 +314,9 @@ def render_single_post(filename):
 
     Arguments:
         filename (str): filename of post to render.
+
+    Raises:
+        FileNotFoundError: when the filename supplied is not found.
     """
     meta_filename = filename
     blog_filename = config["dirs"]["blog"] + os.path.sep + filename
