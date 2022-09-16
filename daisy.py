@@ -48,9 +48,6 @@ class Post:
 
         Arguments:
             filename (str): filename of the post to open.
-
-        Returns:
-            None
         """
         # Create empty HTML attribute.
         self.html = None
@@ -81,9 +78,6 @@ class Post:
 
         Arguments:
             post_type (str): type of template to use.
-
-        Returns:
-            None
         """
         # Open the relevant template file.
         template_file = (config["dirs"]["template"] + os.path.sep + post_type
@@ -160,9 +154,6 @@ def add_to_index_file(post):
 
     Arguments:
         post (Post): post to add to the index file.
-
-    Returns:
-        None
     """
     with open(config["index_file"], "r+", encoding=config["encoding"]) as file:
         data = file.read()
@@ -186,9 +177,6 @@ def generate_index_file(posts):
 
     Arguments:
         posts ([Post]): list of posts to put in the index file.
-
-    Returns:
-        None
     """
     # Sort posts in reverse chronological order.
     posts.sort(key=lambda post: post.date, reverse=True)
@@ -205,11 +193,8 @@ def generate_index_file(posts):
 def read_config_file():
     """Read the configuration file.
 
-    Arguments:
-        None
-
-    Returns:
-        None
+    By default, daisy will look for configuration files in
+    ~/.config/daisy/config.json.
     """
     # Create a file path string for configuration file.
     config_file_path = (os.path.expanduser("~") + os.path.sep
@@ -232,12 +217,6 @@ def check_dirs():
     The specific information is as follows:
     - Which directory are we in? Move to the base directory if need be.
     - Are any directories missing? Create them possible.
-
-    Arguments:
-        None
-
-    Returns:
-        None
     """
     # Check which directory we are in, move up if need be.
     if config["dirs"]["blog"] in os.getcwd():
@@ -256,11 +235,7 @@ def check_dirs():
 def copy_content_files():
     """Copies files from the content directory to the output directory.
 
-    Arguments:
-        None
-
-    Returns:
-        None
+    If there is nothing to be copied, then this function does nothing.
     """
     try:
         distutils.dir_util.copy_tree(config["dirs"]["content"],
@@ -273,11 +248,7 @@ def copy_content_files():
 def setup():
     """Reads configuration file, checks directories and copies contents files.
 
-    Arguments:
-        None
-
-    Returns:
-        None
+    Also sets the traceback limit to 0, so errors are more simple.
     """
     sys.tracebacklimit = 0
 
@@ -288,9 +259,6 @@ def setup():
 
 def parse_arguments():
     """Parse arguments using argparse.
-
-    Arguments:
-        None
 
     Returns:
         argparse.Namespace: an empty Namespace object containing the
@@ -313,14 +281,7 @@ def parse_arguments():
 
 
 def render_all_posts():
-    """Render all posts.
-
-    Arguments:
-        None
-
-    Returns:
-        None
-    """
+    """Render all posts."""
     blog_posts = get_posts(config["dirs"]["blog"] + os.path.sep + "*" +
                            config["ext"]["md"])
 
@@ -347,9 +308,6 @@ def render_single_post(filename):
 
     Arguments:
         filename (str): filename of post to render.
-
-    Returns:
-        None
     """
     meta_filename = filename
     blog_filename = config["dirs"]["blog"] + os.path.sep + filename
