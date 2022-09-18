@@ -11,7 +11,7 @@ Additionally, `daisy` also requires the following Python packages:
 - `Jinja2`: for templating.
 
 These can be found on PyPI. For more details, see
-`[requirements.txt](requirements.txt)`.
+[`requirements.txt`](requirements.txt).
 
 ## Installation
 
