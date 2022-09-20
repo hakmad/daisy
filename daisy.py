@@ -290,24 +290,28 @@ def render_all_posts():
     """Render all posts."""
     blog_posts = get_posts(config["dirs"]["blog"] + os.path.sep + "*" +
                            config["ext"]["md"])
-
+    
+    # Check if there are any blog posts.
     if len(blog_posts) > 0:
-        print("Rendering all posts to HTML")
+        print("Rendering blog posts to HTML")
         for post in blog_posts:
             print(f"Rendering {post.filename + config['ext']['md']}")
             post.render_html("blog")
-
+ 
         print("Generating index file")
         generate_index_file(blog_posts)
 
-        meta_posts = get_posts("*" + config["ext"]["md"])
-
-        for post in meta_posts:
-            print(f"Rendering {post.filename + config['ext']['md']}")
-            post.render_html("meta")
     else:
-        print("No posts found, exiting")
+        print("No blog posts found")
 
+    # Even if there are no blog posts, still render meta posts.
+    print("Rendering meta posts to HTML")
+    meta_posts = get_posts("*" + config["ext"]["md"])
+
+    for post in meta_posts:
+        print(f"Rendering {post.filename + config['ext']['md']}")
+        post.render_html("meta")
+ 
 
 def render_single_post(filename):
     """Render a single post.
