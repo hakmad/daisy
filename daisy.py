@@ -19,7 +19,7 @@ import markdown
 ### Global variables. ###
 
 # Configuration dictionary.
-config = {}
+CONFIG = {}
 
 # Miscellaneous.
 INDEX_HEADER = "title: Index\n\n"
@@ -56,7 +56,7 @@ class Post:
         self.filename = filename[:-3]
 
         # Open and convert the file to a HTML fragment.
-        with open(filename, "r", encoding=config["encoding"]) as file:
+        with open(filename, "r", encoding=CONFIG["encoding"]) as file:
             md_reader = markdown.Markdown(extensions=["meta", "fenced_code"])
 
             self.content = md_reader.convert(file.read())
@@ -80,11 +80,11 @@ class Post:
             post_type (str): type of template to use.
         """
         # Open the relevant template file.
-        template_file = (config["dirs"]["template"] + os.path.sep + post_type
-                         + config["ext"]["html"])
+        template_file = (CONFIG["dirs"]["template"] + os.path.sep + post_type
+                         + CONFIG["ext"]["html"])
 
         # Render the HTML to the template.
-        with open(template_file, "r", encoding=config["encoding"]) as file:
+        with open(template_file, "r", encoding=CONFIG["encoding"]) as file:
             template = jinja2.Template(file.read())
 
             self.html = template.render({
@@ -94,9 +94,9 @@ class Post:
                 })
 
         # Write out full HTML to file.
-        output_file = (config["dirs"]["output"] + os.path.sep + self.filename
-                       + config["ext"]["html"])
-        with open(output_file, "w", encoding=config["encoding"]) as file:
+        output_file = (CONFIG["dirs"]["output"] + os.path.sep + self.filename
+                       + CONFIG["ext"]["html"])
+        with open(output_file, "w", encoding=CONFIG["encoding"]) as file:
             file.write(self.html)
 
 
@@ -141,8 +141,8 @@ def get_posts(path):
     post_list = []
 
     for file in glob.glob(path):
-        if file in config["ignored_files"]:
-            print(f"{file} in {config['ignored_files']}, skipping")
+        if file in CONFIG["ignored_files"]:
+            print(f"{file} in {CONFIG['ignored_files']}, skipping")
         else:
             post_list.append(Post(file))
 
@@ -155,14 +155,14 @@ def add_to_index_file(post):
     Arguments:
         post (Post): post to add to the index file.
     """
-    with open(config["index_file"], "r+", encoding=config["encoding"]) as file:
+    with open(CONFIG["index_file"], "r+", encoding=CONFIG["encoding"]) as file:
         data = file.read()
 
         # Check if post is already in the index file.
         if post.filename not in data:
             index = len(INDEX_HEADER)
             entry = INDEX_POST_ENTRY.format(post.title,
-                    post.filename + config["ext"]["html"], post.date)
+                    post.filename + CONFIG["ext"]["html"], post.date)
 
             new_data = insert_string(data, entry, index)
 
@@ -182,12 +182,12 @@ def generate_index_file(posts):
     posts.sort(key=lambda post: post.date, reverse=True)
 
     # Write index file.
-    with open(config["index_file"], "w", encoding=config["encoding"]) as file:
+    with open(CONFIG["index_file"], "w", encoding=CONFIG["encoding"]) as file:
         file.write(INDEX_HEADER)
 
         for post in posts:
             file.write(INDEX_POST_ENTRY.format(post.title,
-                post.filename + config["ext"]["html"], post.date))
+                post.filename + CONFIG["ext"]["html"], post.date))
 
 
 def read_config_file():
@@ -211,7 +211,7 @@ def read_config_file():
 
     # Read configuration file.
     with open(config_file_path, "r") as file:
-        config.update(json.load(file))
+        CONFIG.update(json.load(file))
 
 
 def check_dirs():
@@ -225,17 +225,17 @@ def check_dirs():
         FileNotFoundError: when the template director cannot be found.
     """
     # Check which directory we are in, move up if need be.
-    if config["dirs"]["blog"] in os.getcwd():
+    if CONFIG["dirs"]["blog"] in os.getcwd():
         os.chdir("..")
 
-    if not os.path.exists(config["dirs"]["template"]):
-        raise FileNotFoundError(f"{config['dirs']['template']} not found!")
+    if not os.path.exists(CONFIG["dirs"]["template"]):
+        raise FileNotFoundError(f"{CONFIG['dirs']['template']} not found!")
 
     # Check and create output directories.
-    if not os.path.exists(config["dirs"]["output"] + os.path.sep +
-                          config["dirs"]["blog"]):
-        os.makedirs(config["dirs"]["output"] + os.path.sep +
-                    config["dirs"]["blog"])
+    if not os.path.exists(CONFIG["dirs"]["output"] + os.path.sep +
+                          CONFIG["dirs"]["blog"]):
+        os.makedirs(CONFIG["dirs"]["output"] + os.path.sep +
+                    CONFIG["dirs"]["blog"])
 
 
 def copy_content_files():
@@ -244,9 +244,9 @@ def copy_content_files():
     If there is nothing to be copied, then this function does nothing.
     """
     try:
-        distutils.dir_util.copy_tree(config["dirs"]["content"],
-            config["dirs"]["output"] + os.path.sep +
-            config["dirs"]["content"][1:])
+        distutils.dir_util.copy_tree(CONFIG["dirs"]["content"],
+            CONFIG["dirs"]["output"] + os.path.sep +
+            CONFIG["dirs"]["content"][1:])
     except distutils.errors.DistutilsFileError:
         pass
 
@@ -288,14 +288,14 @@ def parse_arguments():
 
 def render_all_posts():
     """Render all posts."""
-    blog_posts = get_posts(config["dirs"]["blog"] + os.path.sep + "*" +
-                           config["ext"]["md"])
+    blog_posts = get_posts(CONFIG["dirs"]["blog"] + os.path.sep + "*" +
+                           CONFIG["ext"]["md"])
     
     # Check if there are any blog posts.
     if len(blog_posts) > 0:
         print("Rendering blog posts to HTML")
         for post in blog_posts:
-            print(f"Rendering {post.filename + config['ext']['md']}")
+            print(f"Rendering {post.filename + CONFIG['ext']['md']}")
             post.render_html("blog")
  
         print("Generating index file")
@@ -306,10 +306,10 @@ def render_all_posts():
 
     # Even if there are no blog posts, still render meta posts.
     print("Rendering meta posts to HTML")
-    meta_posts = get_posts("*" + config["ext"]["md"])
+    meta_posts = get_posts("*" + CONFIG["ext"]["md"])
 
     for post in meta_posts:
-        print(f"Rendering {post.filename + config['ext']['md']}")
+        print(f"Rendering {post.filename + CONFIG['ext']['md']}")
         post.render_html("meta")
  
 
@@ -323,11 +323,11 @@ def render_single_post(filename):
         FileNotFoundError: when the filename supplied is not found.
     """
     meta_filename = filename
-    blog_filename = config["dirs"]["blog"] + os.path.sep + filename
+    blog_filename = CONFIG["dirs"]["blog"] + os.path.sep + filename
 
     # Check if post is to be ignored.
-    if (meta_filename or blog_filename) in config["ignored_files"]:
-        print(f"{filename} in config['ignored_files'], exiting")
+    if (meta_filename or blog_filename) in CONFIG["ignored_files"]:
+        print(f"{filename} in CONFIG['ignored_files'], exiting")
         sys.exit()
 
     # Check where the post actually is.
@@ -341,9 +341,9 @@ def render_single_post(filename):
         print(f"Adding {blog_filename} to index file")
         add_to_index_file(blog_post)
 
-        print(f"Rendering {config['index_file']} to HTML")
+        print(f"Rendering {CONFIG['index_file']} to HTML")
 
-        index = get_post(config["index_file"])
+        index = get_post(CONFIG["index_file"])
         index.render_html("meta")
 
     elif os.path.exists(meta_filename):
