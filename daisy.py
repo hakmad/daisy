@@ -18,6 +18,12 @@ import markdown
 
 ### Global variables. ###
 
+# Configuration file path.
+CONFIG_FILE_PATH = (os.path.expanduser("~") + os.path.sep
+                    + ".config" + os.path.sep
+                    + "daisy" + os.path.sep
+                    + "config.json")
+
 # Configuration dictionary.
 CONFIG = {}
 
@@ -190,22 +196,19 @@ def generate_index_file(posts):
                 post.filename + CONFIG["ext"]["html"], post.date))
 
 
-def read_config_file():
+def read_config_file(config_file_path):
     """Read the configuration file.
 
-    By default, daisy will look for configuration files in
-    ~/.config/daisy/config.json.
+    By default, daisy will look for a configuration file in
+    ~/.config/daisy/config.json. See CONFIG_FILE_PATH for details.
+
+    Arguments:
+        config_file_path (str) - file path to check.                                
 
     Raises:
         FileNotFoundError: when the configuration file cannot be found.
     """
-    # Create a file path string for configuration file.
-    config_file_path = (os.path.expanduser("~") + os.path.sep
-                        + ".config" + os.path.sep
-                        + "daisy" + os.path.sep
-                        + "config.json")
-
-    # Check if the filepath is valid.
+    # Check if the file path is valid.
     if not os.path.exists(config_file_path):
         raise FileNotFoundError(f"{config_file_path} not found!")
 
@@ -258,7 +261,7 @@ def setup():
     """
     sys.tracebacklimit = 0
 
-    read_config_file()
+    read_config_file(CONFIG_FILE_PATH)
     check_dirs()
     copy_content_files()
 
