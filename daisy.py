@@ -254,14 +254,18 @@ def copy_content_files():
         pass
 
 
-def setup():
+def setup(cli_arguments):
     """Reads configuration file, checks directories and copies contents files.
 
     Also sets the traceback limit to 0, so errors are more simple.
+
+    Arguments:
+        cli_arguments (argparse.Namespace) - the CLI arguments passed to the
+        program.
     """
     sys.tracebacklimit = 0
 
-    read_config_file(CONFIG_FILE_PATH)
+    read_config_file(cli_arguments.config)
     check_dirs()
     copy_content_files()
 
@@ -278,12 +282,17 @@ def parse_arguments():
             epilog="See https://github.com/hakmad/daisy for help."
             )
 
-    # Setup parser with options.
-    options = parser.add_mutually_exclusive_group(required=True)
-    options.add_argument("-a", "--all", action="store_true", dest="all",
-                         help="convert all files")
-    options.add_argument("-s", "--single", nargs="?", metavar="file",
+    # Setup parser with render options.
+    render_options = parser.add_mutually_exclusive_group(required=True)
+    render_options.add_argument("-a", "--all", action="store_true",
+                                dest="all", help="convert all files")
+    render_options.add_argument("-s", "--single", nargs="?", metavar="file",
                          dest="single", help="convert one file")
+
+    # Setup parser with auxilliary options.
+    parser.add_argument("-c", "--config", nargs="?", metavar="path",
+                        dest="config", default=CONFIG_FILE_PATH,
+                        help="path to configuration file")
 
     # Return parsed arguments:
     return parser.parse_args()
@@ -369,7 +378,7 @@ def main():
     cli_arguments = parse_arguments()
 
     # Run setup.
-    setup()
+    setup(cli_arguments)
 
     # Render all posts.
     if cli_arguments.all:
