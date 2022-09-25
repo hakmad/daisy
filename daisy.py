@@ -6,10 +6,10 @@ A CLI static site generator written in Python.
 
 
 import argparse
-import distutils
 import glob
 import json
 import os
+import shutil
 import sys
 
 import jinja2
@@ -247,10 +247,10 @@ def copy_content_files():
     If there is nothing to be copied, then this function does nothing.
     """
     try:
-        distutils.dir_util.copy_tree(CONFIG["dirs"]["content"],
+        shutil.copytree(CONFIG["dirs"]["content"],
             CONFIG["dirs"]["output"] + os.path.sep +
             CONFIG["dirs"]["content"][1:])
-    except distutils.errors.DistutilsFileError:
+    except FileNotFoundError:
         pass
 
 
