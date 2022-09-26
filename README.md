@@ -59,6 +59,8 @@ This will:
 `daisy` is configured using a JSON file. It will look for this configuration
 file in `~/.config/daisy/config.json` and will exit if it does not find it.
 See [`config.json`](config.json) for a minimal but complete example.
+Alternatively, a configuration file can be specified at runtime with the `-c`
+or `--config` flags.
 
 ## Behaviour and Expectations
 
