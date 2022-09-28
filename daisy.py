@@ -192,8 +192,14 @@ def generate_index_file(posts):
         file.write(INDEX_HEADER)
 
         for post in posts:
-            file.write(INDEX_POST_ENTRY.format(post.title,
-                post.filename + CONFIG["ext"]["html"], post.date))
+            filename = post.filename
+            
+            # Check if we should add the HTML extension
+            if not CONFIG["remove_html_ext"]:
+                filename += CONFIG["ext"]["html"]
+
+            file.write(INDEX_POST_ENTRY.format(post.title, filename,
+                                               post.date))
 
 
 def read_config_file(config_file_path):

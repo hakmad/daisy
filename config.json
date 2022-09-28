@@ -1,6 +1,7 @@
 {
 	"encoding": "utf-8",
 	"index_file": "index.md",
+	"remove_html_ext": true,
 	"ignored_files": [
 		"README.md"
 	],
