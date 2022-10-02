@@ -133,6 +133,11 @@ contains the following:
     about.html
 ```
 
+### Postprocessing
+
+`daisy` can also perform postprocessing. To do this, add a shell command(s) to
+`config.json` in the `"postprocess"` key.
+
 ## Licence
 
 This project is licensed under the MIT license. See

@@ -10,6 +10,7 @@ import glob
 import json
 import os
 import shutil
+import subprocess
 import sys
 
 import jinja2
@@ -300,6 +301,9 @@ def parse_arguments():
                         dest="config", default=CONFIG_FILE_PATH,
                         help="path to configuration file")
 
+    parser.add_argument("-p", "--postprocessing", action="store_true",
+                        dest="postprocessing", help="perform postprocessing")
+
     # Return parsed arguments:
     return parser.parse_args()
 
@@ -376,6 +380,14 @@ def render_single_post(filename):
         raise FileNotFoundError(f"{filename} not found!")
 
 
+def do_postprocessing():
+    """Perform postprocessing."""
+    command = CONFIG["postprocess"]
+
+    # Attempt to run command with subprocess.
+    subprocess.run(command, shell=True)
+
+
 ### Main program. ###
 
 def main():
@@ -393,3 +405,7 @@ def main():
     # Render a single post.
     elif cli_arguments.single:
         render_single_post(cli_arguments.single)
+
+    # Run postprocessing.
+    if cli_arguments.postprocessing:
+       do_postprocessing()
