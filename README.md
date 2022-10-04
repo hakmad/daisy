@@ -54,6 +54,13 @@ This will:
    - Render `[post]` using the `meta.html` template and place it in
      `.output/`.
 
+### Postprocessing
+
+`daisy` also has an option to perform postprocessing after it has finished
+rendering the Markdown files to HTML. To do so, add an entry to the
+`config.json` using the `"postprocess"` key, then run `daisy` again with the
+`-p` or `--postprocessing` flag.
+
 ## Configuration
 
 `daisy` is configured using a JSON file. It will look for this configuration
@@ -132,11 +139,6 @@ contains the following:
     index.html
     about.html
 ```
-
-### Postprocessing
-
-`daisy` can also perform postprocessing. To do this, add a shell command(s) to
-`config.json` in the `"postprocess"` key.
 
 ## Licence
 
