@@ -297,7 +297,7 @@ def parse_arguments():
                          dest="single", help="convert one file")
 
     # Setup parser with auxilliary options.
-    parser.add_argument("-c", "--config", nargs="?", metavar="path",
+    parser.add_argument("--config", nargs="?", metavar="path",
                         dest="config", default=CONFIG_FILE_PATH,
                         help="path to configuration file")
 
