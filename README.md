@@ -57,9 +57,14 @@ This will:
 ### Postprocessing
 
 `daisy` also has an option to perform postprocessing after it has finished
-rendering the Markdown files to HTML. To do so, add an entry to the
-`config.json` using the `"postprocess"` key, then run `daisy` again with the
-`-p` or `--postprocessing` flag.
+rendering the Markdown files to HTML. To do so, add an entry to `config.json`
+using the `"postprocess"` key, then do: `daisy ... -p` or
+`daisy ... --postprocessing`.
+
+Alternatively, you can specify a list of commands to run at runtime, by doing:
+`daisy ... -e [commands]` or `daisy ... --execute [commands]`. Note that
+multiple commands or commands with arguments should be surrounded with
+quotation marks, otherwise the commands may not be executed correctly.
 
 ## Configuration
 
