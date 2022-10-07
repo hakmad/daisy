@@ -297,12 +297,21 @@ def parse_arguments():
                          dest="single", help="convert one file")
 
     # Setup parser with auxilliary options.
-    parser.add_argument("--config", nargs="?", metavar="path",
+
+    # Configuration files.
+    parser.add_argument("-c", "--config", nargs="?", metavar="path",
                         dest="config", default=CONFIG_FILE_PATH,
                         help="path to configuration file")
 
+    # Postprocessing from configuration file..
     parser.add_argument("-p", "--postprocessing", action="store_true",
-                        dest="postprocessing", help="perform postprocessing")
+                        dest="postprocessing",
+                        help="run postprocessing using configuration file")
+
+    # Postprocessing on the fly.
+    parser.add_argument("-e", "--execute", nargs="?", metavar="commands",
+                        dest="commands",
+                        help="run postprocessing using commands on the fly")
 
     # Return parsed arguments:
     return parser.parse_args()
@@ -380,12 +389,14 @@ def render_single_post(filename):
         raise FileNotFoundError(f"{filename} not found!")
 
 
-def do_postprocessing():
-    """Perform postprocessing."""
-    command = CONFIG["postprocess"]
+def run_commands(commands):
+    """Perform postprocessing.
 
+    Arguments:
+        commands (str): a list of commands to execute.
+    """
     # Attempt to run command with subprocess.
-    subprocess.run(command, shell=True)
+    subprocess.run(commands, shell=True)
 
 
 ### Main program. ###
@@ -408,4 +419,7 @@ def main():
 
     # Run postprocessing.
     if cli_arguments.postprocessing:
-       do_postprocessing()
+       run_commands(CONFIG["postprocess"])
+
+    if cli_arguments.commands:
+        run_commands(cli_arguments.commands)
