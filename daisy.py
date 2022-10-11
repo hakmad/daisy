@@ -124,6 +124,16 @@ def insert_string(string, string_to_insert, index):
     return string[:index] + string_to_insert + string[index:]
 
 
+def output_info(message):
+    """Output information to screen if quiet flag has not been set.
+
+    Arguments:
+        message (str): message to output.
+    """
+    if not CONFIG["quiet"]:
+        print(message)
+
+
 def get_post(path):
     """Create a single Post object from a path.
 
@@ -149,7 +159,7 @@ def get_posts(path):
 
     for file in glob.glob(path):
         if file in CONFIG["ignored_files"]:
-            print(f"{file} in {CONFIG['ignored_files']}, skipping")
+            output_info(f"{file} in {CONFIG['ignored_files']}, skipping")
         else:
             post_list.append(Post(file))
 
@@ -313,6 +323,10 @@ def parse_arguments():
                         dest="commands",
                         help="run postprocessing using commands on the fly")
 
+    # Quiet output.
+    parser.add_argument("-q", "--quiet", action="store_true",
+                        dest="quiet", help="run silently")
+
     # Return parsed arguments:
     return parser.parse_args()
 
@@ -324,23 +338,23 @@ def render_all_posts():
     
     # Check if there are any blog posts.
     if len(blog_posts) > 0:
-        print("Rendering blog posts to HTML")
+        output_info("Rendering blog posts to HTML")
         for post in blog_posts:
-            print(f"Rendering {post.filename + CONFIG['ext']['md']}")
+            output_info(f"Rendering {post.filename + CONFIG['ext']['md']}")
             post.render_html("blog")
  
-        print("Generating index file")
+        output_info("Generating index file")
         generate_index_file(blog_posts)
 
     else:
-        print("No blog posts found")
+        output_info("No blog posts found")
 
     # Even if there are no blog posts, still render meta posts.
-    print("Rendering meta posts to HTML")
+    output_info("Rendering meta posts to HTML")
     meta_posts = get_posts("*" + CONFIG["ext"]["md"])
 
     for post in meta_posts:
-        print(f"Rendering {post.filename + CONFIG['ext']['md']}")
+        output_info(f"Rendering {post.filename + CONFIG['ext']['md']}")
         post.render_html("meta")
  
 
@@ -358,28 +372,28 @@ def render_single_post(filename):
 
     # Check if post is to be ignored.
     if (meta_filename or blog_filename) in CONFIG["ignored_files"]:
-        print(f"{filename} in CONFIG['ignored_files'], exiting")
+        output_info(f"{filename} in CONFIG['ignored_files'], exiting")
         sys.exit()
 
     # Check where the post actually is.
     if os.path.exists(blog_filename):
         # Rendering a blog post.
-        print(f"Rendering {blog_filename} to HTML")
+        output_info(f"Rendering {blog_filename} to HTML")
 
         blog_post = get_post(blog_filename)
         blog_post.render_html("blog")
 
-        print(f"Adding {blog_filename} to index file")
+        output_info(f"Adding {blog_filename} to index file")
         add_to_index_file(blog_post)
 
-        print(f"Rendering {CONFIG['index_file']} to HTML")
+        output_info(f"Rendering {CONFIG['index_file']} to HTML")
 
         index = get_post(CONFIG["index_file"])
         index.render_html("meta")
 
     elif os.path.exists(meta_filename):
         # Rendering a meta post.
-        print(f"Rendering {meta_filename} to HTML")
+        output_info(f"Rendering {meta_filename} to HTML")
 
         meta_post = get_post(meta_filename)
         meta_post.render_html("meta")
@@ -408,6 +422,9 @@ def main():
 
     # Run setup.
     setup(cli_arguments)
+
+    # Check if quiet flag was set.
+    CONFIG["quiet"] = cli_arguments.quiet
 
     # Render all posts.
     if cli_arguments.all:
