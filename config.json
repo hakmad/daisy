@@ -1,6 +1,7 @@
 {
 	"encoding": "utf-8",
 	"index_file": "index.md",
+	"quiet": false,
 	"remove_html_ext": true,
 	"postprocess": "echo 'done'",
 	"ignored_files": [
