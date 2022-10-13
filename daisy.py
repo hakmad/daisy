@@ -286,6 +286,9 @@ def setup(cli_arguments):
     check_dirs()
     copy_content_files()
 
+    # Check if quiet flag was set.
+    CONFIG["quiet"] = CONFIG["quiet"] or cli_arguments.quiet
+
 
 def parse_arguments():
     """Parse arguments using argparse.
@@ -422,9 +425,6 @@ def main():
 
     # Run setup.
     setup(cli_arguments)
-
-    # Check if quiet flag was set.
-    CONFIG["quiet"] = cli_arguments.quiet
 
     # Render all posts.
     if cli_arguments.all:
