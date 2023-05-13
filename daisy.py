@@ -266,7 +266,7 @@ def copy_content_files():
     try:
         shutil.copytree(CONFIG["dirs"]["content"],
             CONFIG["dirs"]["output"] + os.path.sep +
-            CONFIG["dirs"]["content"][1:], dir_exists_ok=True)
+            CONFIG["dirs"]["content"][1:], dirs_exist_ok=True)
     except FileNotFoundError as e:
         pass
 
