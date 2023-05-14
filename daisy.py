@@ -19,6 +19,9 @@ import markdown
 
 ### Global variables. ###
 
+# Markdown extensions.
+MARKDOWN_EXTENSIONS = ["meta", "fenced_code", "tables"]
+
 # Configuration file path.
 CONFIG_FILE_PATH = (os.path.expanduser("~") + os.path.sep
                     + ".config" + os.path.sep
@@ -64,7 +67,7 @@ class Post:
 
         # Open and convert the file to a HTML fragment.
         with open(filename, "r", encoding=CONFIG["encoding"]) as file:
-            md_reader = markdown.Markdown(extensions=["meta", "fenced_code"])
+            md_reader = markdown.Markdown(extensions=MARKDOWN_EXTENSIONS)
 
             self.content = md_reader.convert(file.read())
 
